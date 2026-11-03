@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LIZA | Personal AI Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Geist:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        // 1. Safe in-memory storage fallback if localStorage/sessionStorage throws SecurityError in sandboxed iframe
+        function createSafeStorage() {
+          var memStore = {};
+          return {
+            getItem: function(key) { return Object.prototype.hasOwnProperty.call(memStore, key) ? memStore[key] : null; },
+            setItem: function(key, val) { memStore[key] = String(val); },
+            removeItem: function(key) { delete memStore[key]; },
+            clear: function() { memStore = {}; },
+            key: function(i) { return Object.keys(memStore)[i] || null; },
+            get length() { return Object.keys(memStore).length; }
+          };
+        }
+        try {
+          var testKey = '__liza_test__';
+          window.localStorage.setItem(testKey, testKey);
+          window.localStorage.removeItem(testKey);
+        } catch (_) {
+          try {
+            var safeLocal = createSafeStorage();
+            Object.defineProperty(window, 'localStorage', { value: safeLocal, configurable: true, writable: true });
+          } catch (e) {}
+        }
+        try {
+          var testKey2 = '__liza_test__';
+          window.sessionStorage.setItem(testKey2, testKey2);
+          window.sessionStorage.removeItem(testKey2);
+        } catch (_) {
+          try {
+            var safeSession = createSafeStorage();
+            Object.defineProperty(window, 'sessionStorage', { value: safeSession, configurable: true, writable: true });
+          } catch (e) {}
+        }
+
+        // 2. Notification constructor safety shim for Android / restricted iframes
+        if (typeof window !== 'undefined' && 'Notification' in window) {
+          try {
+            var OrigNotification = window.Notification;
+            window.Notification = function NotificationSafeShim(title, options) {
+              try {
+                return new OrigNotification(title, options);
+              } catch (err) {
+                console.warn('[GlobalSafety] Suppressed Notification constructor error:', err);
+                return {
+                  close: function() {},
+                  onclick: null,
+                  onclose: null,
+                  onerror: null
+                };
+              }
+            };
+            window.Notification.prototype = OrigNotification.prototype;
+            window.Notification.permission = OrigNotification.permission || 'default';
+            window.Notification.requestPermission = OrigNotification.requestPermission ? OrigNotification.requestPermission.bind(OrigNotification) : function() { return Promise.resolve('denied'); };
+          } catch (e) {}
+        }
+
+        // 3. Catch & suppress benign browser constructor / audio / speech errors
+        function handleBenignErrors(err) {
+          var msg = (err && (err.message || String(err))) || '';
+          return msg.indexOf('Illegal constructor') !== -1 ||
+                 msg.indexOf('AudioContext') !== -1 ||
+                 msg.indexOf('SpeechRecognition') !== -1 ||
+                 msg.indexOf('Access is denied for this document') !== -1;
+        }
+        window.addEventListener('error', function(event) {
+          if (handleBenignErrors(event.error) || handleBenignErrors(event.message)) {
+            console.warn('[GlobalSafety] Caught and suppressed benign browser error:', event.message);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', function(event) {
+          if (handleBenignErrors(event.reason)) {
+            console.warn('[GlobalSafety] Caught and suppressed benign unhandled promise rejection');
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+    <!-- Live2D Core Libraries (Preloaded for instant, robust Hiyori Live2D rendering) -->
+    <script src="/live2d/lib/live2dcubismcore.min.js"></script>
+    <script src="/live2d/lib/pixi.min.js"></script>
+    <script src="/live2d/lib/cubism4.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

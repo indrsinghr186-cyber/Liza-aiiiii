@@ -1,0 +1,6 @@
+{
+  "summary": "Implementation plan for the new Dell Latitude 7420 System Health Dashboard inside the LIZA Windows Desktop Control Modal, featuring real-time Recharts visualizations for CPU, GPU (Intel Iris Xe), and RAM usage, sliding telemetry history, thermal/frequency metrics, and Python companion backend telemetry extension.",
+  "updatedAt": "2026-11-03T04:15:47.824712300Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

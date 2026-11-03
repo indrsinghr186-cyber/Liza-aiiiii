@@ -1,0 +1,20 @@
+## LIZA AI Assistant - Local Android SDK Configuration
+##
+## Copy or rename this file to 'local.properties' in the project root:
+##   cp local.properties.example local.properties
+##
+## Set the 'sdk.dir' key to your local Android SDK directory.
+##
+## Linux / Generic placeholder:
+sdk.dir=/home/user/Android/Sdk
+##
+## Termux (Android CLI) Configuration:
+## If building inside Termux on Android, install or unpack the Android SDK command-line tools
+## into your Termux home directory, and set sdk.dir to:
+## sdk.dir=/data/data/com.termux/files/home/android-sdk
+##
+## macOS:
+## sdk.dir=/Users/user/Library/Android/sdk
+##
+## Windows:
+## sdk.dir=C\:\\Users\\user\\AppData\\Local\\Android\\Sdk

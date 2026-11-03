@@ -1,0 +1,23 @@
+## LIZA AI Assistant - Android SDK Configuration Template
+##
+## This file provides instructions for setting the Android SDK location.
+## To use this template, rename or copy it to 'local.properties' (or edit local.properties):
+##
+## On Termux (Android CLI):
+## 1. Install or extract the Android command-line tools into your home directory:
+##    mkdir -p $HOME/android-sdk/cmdline-tools
+## 2. Set the path in local.properties:
+##    sdk.dir=/data/data/com.termux/files/home/android-sdk
+##
+## On Linux:
+##    sdk.dir=/home/<your-username>/Android/Sdk
+##
+## On macOS:
+##    sdk.dir=/Users/<your-username>/Library/Android/sdk
+##
+## On Windows:
+##    sdk.dir=C\:\\Users\\<your-username>\\AppData\\Local\\Android\\Sdk
+##
+## Alternatively, set the environment variable in your shell profile (~/.bashrc or ~/.zshrc):
+##    export ANDROID_HOME=$HOME/android-sdk
+##    export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools

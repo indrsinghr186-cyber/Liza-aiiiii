@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LIZA AI</string>
+    <string name="accessibility_service_label">LIZA Device Control</string>
+    <string name="accessibility_service_description">Allows LIZA AI to execute safe user-requested actions such as Navigation (Back/Home/Recents), WhatsApp automated messaging, and YouTube search controls.</string>
+</resources>

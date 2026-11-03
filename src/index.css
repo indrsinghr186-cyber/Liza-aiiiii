@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'DotGothic16', sans-serif;
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #030305;
+  color: #ffffff;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.font-dot-gothic {
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.font-mono-spec {
+  font-family: 'Space Mono', monospace;
+}
+
+.font-sans-body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Hide scrollbars for clean voice interface while keeping silky scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.avatar-mask {
+  mask-image: radial-gradient(circle, black 72%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle, black 72%, transparent 100%);
+}
+
+/* Smooth Hardware Acceleration Class */
+.gpu-smooth {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+/* Purple Neon Animations */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(217, 70, 239, 0.4), 0 0 30px rgba(168, 85, 247, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(217, 70, 239, 0.8), 0 0 65px rgba(168, 85, 247, 0.5);
+  }
+}
+
+.neon-glow-active {
+  animation: neonPulse 2.4s infinite ease-in-out;
+}
+
+/* Shimmering Hologram Aura Animation */
+@keyframes holoRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-holo-rotate {
+  animation: holoRotate 12s linear infinite;
+}
+
+/* Sidebar Assistant Panel Card */
+.assistant-card {
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+
+.action-node {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.action-node:hover {
+  background: rgba(217, 70, 239, 0.12);
+  border-color: #d946ef;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.action-node.primary {
+  background: #d946ef;
+  color: #000000;
+  font-weight: 700;
+  border: none;
+}
+
+.pb-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+
+.action-node.primary:hover {
+  background: #f0abfc;
+  box-shadow: 0 0 22px rgba(217, 70, 239, 0.5);
+}
+
+/* Differentiated Chat History Styles with Silky Glass */
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.18) 0%, rgba(147, 51, 234, 0.2) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  border-radius: 18px 4px 18px 18px;
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.12);
+  transition: all 0.3s ease;
+}
+
+.chat-bubble-liza {
+  align-self: flex-start;
+  background: linear-gradient(135deg, rgba(20, 16, 32, 0.92) 0%, rgba(12, 10, 20, 0.92) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(217, 70, 239, 0.35);
+  border-radius: 4px 18px 18px 18px;
+  box-shadow: 0 4px 20px rgba(217, 70, 239, 0.15);
+  transition: all 0.3s ease;
+}
+
+@keyframes typewriterBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 5px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: middle;
+  background-color: #d946ef;
+  animation: typewriterBlink 0.7s infinite;
+}
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_amoled">#030303</color>
+    <color name="purple_primary">#D946EF</color>
+    <color name="purple_glow">#A855F7</color>
+    <color name="purple_surface">#0F0817</color>
+    <color name="purple_card">#160C22</color>
+    <color name="text_white">#F8FAFC</color>
+    <color name="text_subtle">#94A3B8</color>
+</resources>
