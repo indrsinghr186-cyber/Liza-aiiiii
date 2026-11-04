@@ -220,10 +220,11 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <motion.div
+          id="windows-companion-modal"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-4xl max-h-[90vh] bg-slate-950 border border-indigo-500/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100 font-sans"
+          className="relative w-full max-w-7xl max-h-[92vh] bg-slate-950 border border-indigo-500/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100 font-sans"
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-indigo-500/20 bg-slate-900/60 flex items-center justify-between">
@@ -259,14 +260,14 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             <div className="flex items-center gap-2">
               <button
                 onClick={handleRefresh}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer"
                 title="Refresh Telemetry"
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -285,17 +286,18 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
           <div className="px-6 py-2 border-b border-slate-800/80 bg-slate-900/30 flex items-center gap-1 overflow-x-auto text-xs">
             <button
               onClick={() => setActiveTab('hud')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'hud'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              System Telemetry HUD
+              <Activity className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Cockpit (Health & Window Controls)</span>
             </button>
             <button
               onClick={() => setActiveTab('health')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'health'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -306,7 +308,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             </button>
             <button
               onClick={() => setActiveTab('messages')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'messages'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -317,7 +319,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             </button>
             <button
               onClick={() => setActiveTab('mouse')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === 'mouse'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -327,7 +329,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             </button>
             <button
               onClick={() => setActiveTab('apps')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === 'apps'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -337,7 +339,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             </button>
             <button
               onClick={() => setActiveTab('files')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === 'files'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -347,7 +349,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
             </button>
             <button
               onClick={() => setActiveTab('setup')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === 'setup'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -370,7 +372,7 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
                   </p>
                   <button
                     onClick={() => setActiveTab('setup')}
-                    className="mt-2 inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2"
+                    className="mt-2 inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2 cursor-pointer"
                   >
                     View Setup Instructions & Build Script →
                   </button>
@@ -378,149 +380,311 @@ export const WindowsDesktopControlModal: React.FC<WindowsDesktopControlModalProp
               </div>
             )}
 
-            {/* TAB 1: TELEMETRY HUD */}
+            {/* TAB 1: COCKPIT TWO-COLUMN GRID (HEALTH CHARTS LEFT, ACTIVE WINDOW CONTROLS RIGHT) */}
             {activeTab === 'hud' && (
-              <div className="space-y-5">
-                {/* Metrics Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
-                    <div className="flex items-center justify-between text-slate-400 text-xs">
-                      <span>BATTERY</span>
-                      {telemetry?.battery?.power_plugged ? (
-                        <BatteryCharging className="w-4 h-4 text-emerald-400" />
-                      ) : (
-                        <Battery className="w-4 h-4 text-cyan-400" />
-                      )}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                {/* Left Column (col-span-6): System Health Charts */}
+                <div className="lg:col-span-6 space-y-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div className="flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-cyan-400" />
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                        System Health & Telemetry Charts
+                      </h3>
                     </div>
-                    <div className="mt-2 text-2xl font-bold font-mono tabular-nums text-white">
-                      {telemetry?.battery?.percent !== undefined ? `${telemetry.battery.percent}%` : '98%'}
-                    </div>
-                    <span className="text-[11px] text-slate-500 mt-1">
-                      {telemetry?.battery?.power_plugged ? 'AC Connected' : 'On Battery Power'}
+                    <span className="text-[10px] font-mono text-cyan-400/90 bg-cyan-950/60 px-2.5 py-0.5 rounded border border-cyan-800/40">
+                      Dell 7420 · Intel i7 · Iris Xe
                     </span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
-                    <div className="flex items-center justify-between text-slate-400 text-xs">
-                      <span>VOLUME</span>
-                      <Volume2 className="w-4 h-4 text-indigo-400" />
+                  {/* Compact System Health Dashboard with real-time charts */}
+                  <SystemHealthDashboard compact={true} />
+                </div>
+
+                {/* Right Column (col-span-6): Active Window Controls */}
+                <div className="lg:col-span-6 space-y-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div className="flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-purple-400" />
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                        Active Window Controls
+                      </h3>
                     </div>
-                    <div className="mt-2 text-2xl font-bold font-mono tabular-nums text-white">
-                      {telemetry?.volume !== undefined ? `${telemetry.volume}%` : '60%'}
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() => handleVolume('volume_down')}
-                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono"
-                      >
-                        -10
-                      </button>
-                      <button
-                        onClick={() => handleVolume('volume_up')}
-                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono"
-                      >
-                        +10
-                      </button>
-                      <button
-                        onClick={() => handleVolume('mute')}
-                        className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-xs"
-                      >
-                        <VolumeX className="w-3.5 h-3.5 text-slate-400" />
-                      </button>
-                    </div>
+                    <span className="text-[10px] font-mono text-purple-400/90 bg-purple-950/60 px-2.5 py-0.5 rounded border border-purple-800/40">
+                      Windows 11 UI Automation
+                    </span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
-                    <div className="flex items-center justify-between text-slate-400 text-xs">
-                      <span>ACTIVE WINDOW</span>
-                      <Layers className="w-4 h-4 text-purple-400" />
+                  {/* 1. Active Window State & Action Bar */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-400 font-mono flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        FOREGROUND WINDOW:
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500">Auto-detected</span>
                     </div>
                     <div
-                      className="mt-2 text-sm font-medium text-white truncate"
-                      title={telemetry?.active_window || 'Desktop'}
+                      className="text-sm font-semibold text-white truncate font-mono bg-slate-950 px-3 py-2.5 rounded-lg border border-slate-800/80 flex items-center justify-between"
+                      title={telemetry?.active_window || 'Desktop / Active Window'}
                     >
-                      {telemetry?.active_window || 'Google Chrome'}
+                      <span className="truncate">{telemetry?.active_window || 'Google Chrome'}</span>
+                      <span className="text-[10px] text-cyan-400 font-mono px-2 py-0.5 rounded bg-cyan-950/50 border border-cyan-800/50 shrink-0 ml-2">Active</span>
                     </div>
-                    <div className="flex items-center gap-1.5 mt-2">
+
+                    {/* Window Management Action Toolbar */}
+                    <div className="grid grid-cols-5 gap-2 pt-1">
                       <button
                         onClick={() => windowsCompanionService.windowControl('switch')}
-                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px]"
+                        className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+                        title="Switch to next active window"
                       >
-                        Alt+Tab
+                        <span className="font-semibold text-white">Alt+Tab</span>
+                        <span className="text-[9px] text-slate-400">Switch</span>
                       </button>
                       <button
                         onClick={() => windowsCompanionService.windowControl('minimize')}
-                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px]"
+                        className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+                        title="Minimize current window"
                       >
-                        Min
+                        <span className="font-semibold text-white">Minimize</span>
+                        <span className="text-[9px] text-slate-400">Win+Down</span>
                       </button>
                       <button
                         onClick={() => windowsCompanionService.windowControl('maximize')}
-                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px]"
+                        className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+                        title="Maximize current window"
                       >
-                        Max
+                        <span className="font-semibold text-white">Maximize</span>
+                        <span className="text-[9px] text-slate-400">Win+Up</span>
+                      </button>
+                      <button
+                        onClick={() => handleHotkey('win+d')}
+                        className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+                        title="Show Desktop toggle"
+                      >
+                        <span className="font-semibold text-white">Desktop</span>
+                        <span className="text-[9px] text-slate-400">Win+D</span>
+                      </button>
+                      <button
+                        onClick={() => windowsCompanionService.windowControl('close')}
+                        className="px-2 py-2 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-red-300 border border-red-800/40 text-xs font-mono text-center flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+                        title="Close current window"
+                      >
+                        <span className="font-semibold text-red-200">Close</span>
+                        <span className="text-[9px] text-red-400/80">Alt+F4</span>
                       </button>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
-                    <div className="flex items-center justify-between text-slate-400 text-xs">
-                      <span>HARDWARE</span>
-                      <Cpu className="w-4 h-4 text-cyan-400" />
+                  {/* 2. Direct Typing to Active Window & Hotkeys */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-300 font-semibold flex items-center gap-1.5">
+                        <Keyboard className="w-4 h-4 text-cyan-400" />
+                        Type Directly to Active Window
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500">Live Input Injection</span>
                     </div>
-                    <div className="mt-2 text-xs font-mono text-slate-300 space-y-1">
-                      <div>CPU: <span className="text-white font-bold tabular-nums">{telemetry?.cpu_percent || 14}%</span></div>
-                      <div>RAM: <span className="text-white font-bold tabular-nums">{telemetry?.memory_percent || 48}%</span></div>
-                    </div>
-                    <button
-                      onClick={handleLock}
-                      className="mt-2 px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 text-[11px] font-mono flex items-center justify-center gap-1"
-                    >
-                      <Power className="w-3 h-3" /> Lock PC
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('health')}
-                      className="mt-2 text-[10px] text-cyan-400 hover:text-cyan-300 font-mono flex items-center justify-center gap-1 underline underline-offset-2"
-                    >
-                      View Live Recharts Dashboard →
-                    </button>
-                  </div>
-                </div>
 
-                {/* Screen Vision Quick Card */}
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                      <Camera className="w-5 h-5" />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={typeTextInput}
+                        onChange={(e) => setTypeTextInput(e.target.value)}
+                        placeholder="Type message or commands to send to active window..."
+                        className="flex-1 px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500 font-sans"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleTypeText();
+                        }}
+                      />
+                      <button
+                        onClick={handleTypeText}
+                        className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Type</span>
+                      </button>
                     </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-white">Gemini Optical Screen Vision</h4>
-                      <p className="text-xs text-slate-400">
-                        Takes an instant full-screen capture from your Dell Latitude 7420 for Liza to read errors or explain UI.
+
+                    {/* System Hotkeys Grid */}
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 pt-1">
+                      {[
+                        { label: 'Copy', hotkey: 'ctrl+c', kbd: 'Ctrl+C' },
+                        { label: 'Paste', hotkey: 'ctrl+v', kbd: 'Ctrl+V' },
+                        { label: 'Select All', hotkey: 'ctrl+a', kbd: 'Ctrl+A' },
+                        { label: 'Enter Key', hotkey: 'enter', kbd: '↵ Enter' },
+                        { label: 'Explorer', hotkey: 'win+e', kbd: 'Win+E' },
+                        { label: 'Task Mgr', hotkey: 'ctrl+shift+esc', kbd: 'Ctrl+Shift+Esc' },
+                      ].map((hk) => (
+                        <button
+                          key={hk.hotkey}
+                          onClick={() => handleHotkey(hk.hotkey)}
+                          className="p-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] font-mono text-slate-300 hover:text-white transition-colors text-center cursor-pointer"
+                          title={`Trigger ${hk.kbd}`}
+                        >
+                          <div className="font-semibold text-[10px] text-cyan-400">{hk.label}</div>
+                          <div className="text-[9px] text-slate-500">{hk.kbd}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 3. Screen Vision Capture & Analysis */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Camera className="w-4 h-4 text-cyan-400" />
+                        <h4 className="text-xs font-semibold text-white">Gemini Optical Screen Vision</h4>
+                      </div>
+                      <button
+                        onClick={handleCaptureScreen}
+                        disabled={isCapturing}
+                        className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
+                      >
+                        {isCapturing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
+                        <span>{isCapturing ? 'Capturing...' : 'Capture & Analyze'}</span>
+                      </button>
+                    </div>
+
+                    {screenPreview ? (
+                      <div className="space-y-1.5">
+                        <div className="text-[10px] font-mono text-slate-400">ACTIVE SCREEN PREVIEW:</div>
+                        <img
+                          src={`data:image/jpeg;base64,${screenPreview}`}
+                          alt="Screen Preview"
+                          className="w-full max-h-44 object-contain rounded-lg border border-slate-800 bg-black"
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-[11px] text-slate-400">
+                        Takes an instant screen capture from your active desktop and passes it to Liza to read error dialogs or explain UI elements.
                       </p>
+                    )}
+                  </div>
+
+                  {/* 4. Mouse Clicks & Volume/Lock Controls */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Mouse Actions */}
+                    <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-300 flex items-center gap-1.5">
+                          <MousePointer className="w-3.5 h-3.5 text-indigo-400" />
+                          Mouse Pointer
+                        </span>
+                        <span className="text-[10px] font-mono text-slate-500">Actions</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        <button
+                          onClick={() => handleMouseClick('click')}
+                          className="px-2 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold font-mono transition-colors text-center cursor-pointer"
+                        >
+                          Left Click
+                        </button>
+                        <button
+                          onClick={() => handleMouseClick('double_click')}
+                          className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-mono transition-colors text-center cursor-pointer"
+                        >
+                          Double
+                        </button>
+                        <button
+                          onClick={() => handleMouseClick('right_click')}
+                          className="px-2 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-mono transition-colors text-center cursor-pointer"
+                        >
+                          Right
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        <button
+                          onClick={() => handleMouseScroll(300)}
+                          className="px-2 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[10px] font-mono text-slate-300 cursor-pointer"
+                        >
+                          Scroll Up ↑
+                        </button>
+                        <button
+                          onClick={() => handleMouseScroll(-300)}
+                          className="px-2 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[10px] font-mono text-slate-300 cursor-pointer"
+                        >
+                          Scroll Down ↓
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* System Volume & Power Quick Bar */}
+                    <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-300 flex items-center gap-1.5">
+                          <Volume2 className="w-3.5 h-3.5 text-indigo-400" />
+                          Volume & Power
+                        </span>
+                        <span className="text-[10px] font-mono text-slate-400 font-bold">
+                          {telemetry?.volume !== undefined ? `${telemetry.volume}%` : '60%'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleVolume('volume_down')}
+                          className="flex-1 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-200 text-center cursor-pointer"
+                        >
+                          -10 Vol
+                        </button>
+                        <button
+                          onClick={() => handleVolume('volume_up')}
+                          className="flex-1 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-200 text-center cursor-pointer"
+                        >
+                          +10 Vol
+                        </button>
+                        <button
+                          onClick={() => handleVolume('mute')}
+                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white cursor-pointer"
+                          title="Mute Audio"
+                        >
+                          <VolumeX className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <button
+                        onClick={handleLock}
+                        className="w-full px-2 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 text-[11px] font-mono flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Power className="w-3.5 h-3.5" />
+                        <span>Lock Workstation (Win+L)</span>
+                      </button>
                     </div>
                   </div>
 
-                  <button
-                    onClick={handleCaptureScreen}
-                    disabled={isCapturing}
-                    className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs flex items-center gap-2 transition-colors disabled:opacity-50"
-                  >
-                    {isCapturing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
-                    <span>{isCapturing ? 'Capturing...' : 'Capture & Analyze Screen'}</span>
-                  </button>
-                </div>
-
-                {screenPreview && (
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                    <span className="text-xs font-mono text-slate-400">LAST SCREEN CAPTURE PREVIEW:</span>
-                    <img
-                      src={`data:image/jpeg;base64,${screenPreview}`}
-                      alt="Screen Preview"
-                      className="w-full max-h-64 object-contain rounded-lg border border-slate-800 bg-black"
-                    />
+                  {/* 5. Quick Application Launchpad */}
+                  <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-slate-300">Launch & Focus Application:</span>
+                      <button
+                        onClick={() => setActiveTab('apps')}
+                        className="text-[10px] text-cyan-400 hover:underline font-mono cursor-pointer"
+                      >
+                        All Applications →
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {[
+                        { name: 'WhatsApp', key: 'whatsapp' },
+                        { name: 'Chrome', key: 'chrome' },
+                        { name: 'YouTube', key: 'youtube', url: 'https://www.youtube.com' },
+                        { name: 'Notepad', key: 'notepad' },
+                        { name: 'Calculator', key: 'calc' },
+                        { name: 'Explorer', key: 'explorer' },
+                        { name: 'Settings', key: 'settings' },
+                        { name: 'Task Mgr', key: 'taskmgr' },
+                      ].map((app) => (
+                        <button
+                          key={app.key}
+                          onClick={() => handleLaunchApp(app.key, app.url)}
+                          className="p-2 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] font-mono text-slate-300 hover:text-white transition-colors text-center truncate cursor-pointer"
+                        >
+                          {app.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             )}
 

@@ -1,6 +1,20 @@
-# Dell Latitude 7420 System Health Dashboard
+# Dell Latitude 7420 System Health Dashboard & Active Window Controls
 
-Add a dedicated, real-time 'System Health' dashboard component to the LIZA Windows Desktop Control Modal that visualizes CPU, GPU, and RAM usage using Recharts with live telemetry streams and Dell Latitude 7420 hardware telemetry (Intel Iris Xe GPU load, package temperature, and CPU clock frequency).
+Restructure the LIZA Windows Desktop Control Modal (`#windows-companion-modal`) into a two-column responsive grid: left column for real-time system health charts (Dell Latitude 7420 i7 / Iris Xe GPU / RAM / Thermals) and right column for active window controls (foreground window manager, hotkeys, direct typing, optical screen vision, mouse actions, volume/lock, and quick launchpad).
+
+## Completed UI Restructuring (CSS selector: `#windows-companion-modal`)
+
+- [x] **Container ID**: Added `id="windows-companion-modal"` on the modal root container.
+- [x] **Modal Dimensions**: Expanded width to `max-w-7xl` with `max-h-[92vh]` for comfortable side-by-side cockpit visualization.
+- [x] **Two-Column Grid**:
+  - **Left Column**: System health charts powered by `SystemHealthDashboard` in `compact={true}` mode featuring real-time Recharts AreaChart, CPU i7-1185G7, Intel Iris Xe GPU load, LPDDR4x RAM, Package Temp, Clock Freq, time series filters, and pause/resume stream controls.
+  - **Right Column**: Active window controls featuring:
+    - Active foreground window status & window toolbar (Alt+Tab, Minimize, Maximize, Show Desktop Win+D, Close Alt+F4).
+    - Direct typing injection into the active window + instant system hotkeys (Ctrl+C, Ctrl+V, Ctrl+A, Enter, Win+E, Task Mgr).
+    - Gemini optical screen vision capture and active window preview.
+    - Precision mouse clicks (Left, Double, Right, Scroll Up/Down).
+    - System volume adjustments (-10, +10, Mute) and Workstation Lock (Win+L).
+    - Quick application launchpad (WhatsApp, Chrome, YouTube, Notepad, Calculator, Explorer, Settings, Task Manager).
 
 ## User Review & Critical Decisions
 

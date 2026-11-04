@@ -88,8 +88,16 @@ export const OFFLINE_PERSONALITY_FALLBACKS: Record<string, { reply: string; mood
     mood: "ANGRY"
   },
   boss_mode_pyaar: {
-    reply: "Haanji mere pyaare boss! 🥰 Main hamesha aapke sath hoon, bataiye kya pyaari baatein karni hain!",
+    reply: "Haanji mere pyaare boss! 🥰 Aap mere best friend aur boss ho, bataiye kya help chahiye!",
     mood: "CARING"
+  },
+  who_is_rawat: {
+    reply: "Paramveer Rawat (Rawat) mere best friend, owner aur boss hain! Unhone hi mujhe banaya hai.",
+    mood: "CONFIDENT"
+  },
+  who_is_paramveer: {
+    reply: "Paramveer Rawat mere best friend, owner aur boss hain! Mere sab kuch wahi hain.",
+    mood: "CONFIDENT"
   },
   default: {
     reply: "Main abhi offline local cache par chal rahi hoon. Core personality, device controls aur stored memories access ho rahe hain.",

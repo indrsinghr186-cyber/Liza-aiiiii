@@ -88,7 +88,11 @@ const CustomHealthTooltip: React.FC<CustomTooltipProps> = ({ active, payload, la
   );
 };
 
-export const SystemHealthDashboard: React.FC = () => {
+export interface SystemHealthDashboardProps {
+  compact?: boolean;
+}
+
+export const SystemHealthDashboard: React.FC<SystemHealthDashboardProps> = ({ compact = false }) => {
   const [history, setHistory] = useState<SystemHealthDataPoint[]>([]);
   const [current, setCurrent] = useState<SystemHealthDataPoint | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -157,9 +161,9 @@ export const SystemHealthDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-${compact ? '4' : '6'}`}>
       {/* Real-time Hardware Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'}`}>
         {/* 1. CPU Card */}
         <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm relative overflow-hidden group hover:border-cyan-500/40 transition-colors">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
@@ -524,62 +528,64 @@ export const SystemHealthDashboard: React.FC = () => {
       </div>
 
       {/* Dell Latitude 7420 Hardware Architecture Spec Sheet */}
-      <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm space-y-3">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-cyan-400" />
-            <h4 className="text-sm font-semibold text-slate-100">
-              Dell Latitude 7420 Architecture & Diagnostic Profile
-            </h4>
+      {!compact && (
+        <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm space-y-3">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-cyan-400" />
+              <h4 className="text-sm font-semibold text-slate-100">
+                Dell Latitude 7420 Architecture & Diagnostic Profile
+              </h4>
+            </div>
+            <span className="text-xs font-mono text-cyan-400">
+              Owner: Paramveer Rawat
+            </span>
           </div>
-          <span className="text-xs font-mono text-cyan-400">
-            Owner: Paramveer Rawat
-          </span>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
-            <div className="text-slate-400 font-medium">Compute Subsystem</div>
-            <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
-              • 11th Gen Intel® Core™ i7-1185G7<br />
-              • 4 Cores, 8 Threads @ 3.00 GHz<br />
-              • Intel Smart Cache: 12 MB<br />
-              • Max Turbo Frequency: 4.80 GHz
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
+              <div className="text-slate-400 font-medium">Compute Subsystem</div>
+              <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
+                • 11th Gen Intel® Core™ i7-1185G7<br />
+                • 4 Cores, 8 Threads @ 3.00 GHz<br />
+                • Intel Smart Cache: 12 MB<br />
+                • Max Turbo Frequency: 4.80 GHz
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
+              <div className="text-slate-400 font-medium">Graphics & Vision Engine</div>
+              <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
+                • Intel® Iris® Xe Graphics (96 EU)<br />
+                • Max Dynamic Freq: 1.35 GHz<br />
+                • DirectX 12.1 / Vulkan 1.3<br />
+                • Quick Sync Video & AI Deep Learning Boost
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
+              <div className="text-slate-400 font-medium">Memory & Power Architecture</div>
+              <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
+                • 16 GB LPDDR4x-4267 MHz (Dual-Channel)<br />
+                • Dell ExpressCharge™ 4-Cell 63Wh<br />
+                • Thermal Profile: Dell Optimizer<br />
+                • Security: Intel vPro® Hardware Shield
+              </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
-            <div className="text-slate-400 font-medium">Graphics & Vision Engine</div>
-            <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
-              • Intel® Iris® Xe Graphics (96 EU)<br />
-              • Max Dynamic Freq: 1.35 GHz<br />
-              • DirectX 12.1 / Vulkan 1.3<br />
-              • Quick Sync Video & AI Deep Learning Boost
+          {/* Live Status Summary Footer */}
+          <div className="pt-2 flex flex-wrap items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 font-mono">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Telemetry Status: {companionStatus === 'connected' ? 'Live Localhost Agent (Port 8765)' : 'Dell Latitude 7420 Active Engine'}</span>
             </div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800/80 space-y-1.5">
-            <div className="text-slate-400 font-medium">Memory & Power Architecture</div>
-            <div className="text-slate-200 font-mono text-[11px] leading-relaxed">
-              • 16 GB LPDDR4x-4267 MHz (Dual-Channel)<br />
-              • Dell ExpressCharge™ 4-Cell 63Wh<br />
-              • Thermal Profile: Dell Optimizer<br />
-              • Security: Intel vPro® Hardware Shield
+            <div className="text-slate-500 text-[11px]">
+              Platform: Windows 11 Pro 64-bit · Assistant: LIZA AI
             </div>
           </div>
         </div>
-
-        {/* Live Status Summary Footer */}
-        <div className="pt-2 flex flex-wrap items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 font-mono">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Telemetry Status: {companionStatus === 'connected' ? 'Live Localhost Agent (Port 8765)' : 'Dell Latitude 7420 Active Engine'}</span>
-          </div>
-          <div className="text-slate-500 text-[11px]">
-            Platform: Windows 11 Pro 64-bit · Assistant: LIZA AI
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

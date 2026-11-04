@@ -251,37 +251,6 @@ export const FunctionPanel: React.FC<FunctionPanelProps> = ({
             <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 scrollbar-thin scrollbar-thumb-purple-500/20">
 
 
-              {/* SECTION: 🌟 20 SUPER FEATURES SUITE BANNER */}
-              {onOpenMegaHub && (
-                <div 
-                  onClick={() => {
-                    playClickSound?.();
-                    onOpenMegaHub();
-                    onClose();
-                  }}
-                  className="p-4 rounded-2xl bg-gradient-to-r from-pink-600/30 via-purple-600/30 to-indigo-600/30 border border-pink-400/40 hover:border-pink-300 flex items-center justify-between cursor-pointer transition-all shadow-lg hover:scale-[1.01] active:scale-[0.99] group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-pink-500/20 text-pink-300 border border-pink-400/30 group-hover:scale-110 transition-transform">
-                      <Sparkles size={22} className="animate-spin-slow" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-mono-spec text-sm font-bold text-white uppercase tracking-wide">
-                          🌟 20 Super Features Suite
-                        </h3>
-                        <span className="px-2 py-0.5 rounded-full text-[9px] font-mono-spec font-bold bg-pink-500/30 text-pink-200 border border-pink-400/50">
-                          ALL UNLOCKED
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-white/70 font-mono-spec mt-0.5">
-                        Avatar Studio, Sleep ASMR, Tarot, Shayari, Pomodoro, Secret Diary & more
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronRight size={18} className="text-pink-300 group-hover:translate-x-1 transition-transform" />
-                </div>
-              )}
 
 
               {/* SECTION: 🚀 WEB SUPERPOWERS (CAMERA, MUSIC, MEMORY) */}

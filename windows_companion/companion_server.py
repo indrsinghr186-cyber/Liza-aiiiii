@@ -264,9 +264,21 @@ def launch_application(cmd: AppCommand, _: bool = Depends(verify_token)):
         "microsoft edge": ["start", "msedge"],
         "paint": ["mspaint.exe"],
         "control panel": ["control.exe"],
+        "spotify": ["start", "spotify:"],
+        "whatsapp": ["start", "whatsapp:"],
+        "whatsapp desktop": ["start", "whatsapp:"],
+        "wa": ["start", "whatsapp:"],
     }
 
     try:
+        if target in ("whatsapp", "whatsapp desktop", "wa", "open whatsapp"):
+            try:
+                subprocess.Popen("start whatsapp:", shell=True)
+                return {"success": True, "app": "WhatsApp", "launched": True}
+            except Exception:
+                webbrowser.open("https://web.whatsapp.com")
+                return {"success": True, "app": "WhatsApp Web", "url": "https://web.whatsapp.com"}
+
         if target in ("youtube", "open youtube"):
             yt_url = cmd.url or "https://www.youtube.com"
             webbrowser.open(yt_url)
@@ -543,12 +555,223 @@ tool_registry.register(
     requires_confirmation=True
 )(lambda recipient_name, phone, message: controller.dispatch_desktop_message("sms", recipient_name, phone, message, confirmed=True))
 
+class OpenChatCommand(BaseModel):
+    contact_name: str = Field(..., description="Recipient or contact name to open")
+    app: Optional[str] = Field(default="whatsapp", description="Target application")
+
+
+class ReadMessagesCommand(BaseModel):
+    contact_name: Optional[str] = Field(default=None, description="Contact name or None for active chat")
+    app: Optional[str] = Field(default="whatsapp", description="Target application")
+
+
+class ClickElementCommand(BaseModel):
+    target_description: Optional[str] = Field(default=None, description="UI element label or description")
+    x: Optional[int] = None
+    y: Optional[int] = None
+
+
+class TypeTextCommand(BaseModel):
+    text: str = Field(..., description="Text content to type")
+    target: Optional[str] = None
+
+
+class PressKeyCommand(BaseModel):
+    key: str = Field(..., description="Key name e.g. enter, esc, backspace")
+    modifiers: Optional[str] = Field(default=None, description="Modifier keys e.g. ctrl, alt, shift")
+
+
+class ScrollScreenCommand(BaseModel):
+    direction: str = Field(default="down", description="'up' or 'down'")
+    amount: Optional[int] = Field(default=300, description="Pixels to scroll")
+
+
+@app.post("/whatsapp/open_chat")
+def open_chat_endpoint(cmd: OpenChatCommand, _: bool = Depends(verify_token)):
+    """Opens contact conversation in WhatsApp Desktop or Web."""
+    return whatsapp_automation.open_chat(cmd.contact_name)
+
+
+@app.post("/whatsapp/read_messages")
+def read_messages_endpoint(cmd: ReadMessagesCommand, _: bool = Depends(verify_token)):
+    """Reads visible messages from the active or specified chat."""
+    return whatsapp_automation.read_visible_messages(cmd.contact_name)
+
+
+# --- Universal AI Action Engine Tool Registrations ---
+
 tool_registry.register(
-    name="search_contacts",
-    description="Search contacts by name, alias, or relationship.",
+    name="open_application",
+    description="Open a desktop application by name (e.g. WhatsApp, Chrome, YouTube, Notepad, Calculator, Explorer, Settings) or open a website URL.",
+    category="system",
+    parameters={
+        "app_name": {"type": "string", "description": "Name of the application or website"},
+        "url": {"type": "string", "description": "Optional URL if opening browser or video"}
+    }
+)(lambda app_name, url=None: (
+    webbrowser.open(url or f"https://www.youtube.com" if app_name.lower() in ("youtube", "open youtube") else url) if url or app_name.lower() in ("youtube", "open youtube")
+    else (
+        whatsapp_automation.launch_or_activate_whatsapp() if "whatsapp" in app_name.lower()
+        else subprocess.Popen(f"start {app_name}", shell=True)
+    )
+) or {"success": True, "app": app_name})
+
+tool_registry.register(
+    name="close_application",
+    description="Close an active application by process name.",
+    category="system",
+    parameters={"app_name": {"type": "string", "description": "Application name to close"}}
+)(lambda app_name: (
+    subprocess.run(f"taskkill /IM {app_name if app_name.endswith('.exe') else app_name + '.exe'} /F", shell=True)
+) or {"success": True, "closed": app_name})
+
+tool_registry.register(
+    name="switch_application",
+    description="Switch active window to next application or specified app (Alt+Tab).",
+    category="window",
+    parameters={"app_name": {"type": "string", "description": "Optional app name"}}
+)(lambda app_name=None: controller.manage_window("switch"))
+
+tool_registry.register(
+    name="search_contact",
+    description="Search contact by name or relationship (handles duplicate names without guessing).",
     category="messaging",
-    parameters={"query": {"type": "string", "description": "Contact search name or alias"}},
-    requires_confirmation=False
-)(lambda query="": controller.search_contacts(query))
+    parameters={
+        "query": {"type": "string", "description": "Name or alias"},
+        "app": {"type": "string", "description": "Target app"}
+    }
+)(lambda query="", app="whatsapp": controller.search_contacts(query))
+
+tool_registry.register(
+    name="open_chat",
+    description="Locate contact and open conversation in messaging app.",
+    category="messaging",
+    parameters={
+        "contact_name": {"type": "string", "description": "Contact name"},
+        "app": {"type": "string", "description": "Target messaging app"}
+    }
+)(lambda contact_name, app="whatsapp": whatsapp_automation.open_chat(contact_name))
+
+tool_registry.register(
+    name="read_visible_messages",
+    description="Read visible messages from current or specified contact chat.",
+    category="messaging",
+    parameters={
+        "contact_name": {"type": "string", "description": "Optional contact name"},
+        "app": {"type": "string", "description": "Target app"}
+    }
+)(lambda contact_name=None, app="whatsapp": whatsapp_automation.read_visible_messages(contact_name))
+
+tool_registry.register(
+    name="draft_message",
+    description="Compose and prepare a message in chat input box for user confirmation preview.",
+    category="messaging",
+    parameters={
+        "recipient": {"type": "string", "description": "Contact name"},
+        "message": {"type": "string", "description": "Message text"},
+        "app": {"type": "string", "description": "Target app"}
+    }
+)(lambda recipient, message, app="whatsapp": whatsapp_automation.process_whatsapp_automation(recipient, message, confirmed=False, action="prepare"))
+
+tool_registry.register(
+    name="send_message",
+    description="Send prepared message after explicit user confirmation.",
+    category="messaging",
+    parameters={
+        "recipient": {"type": "string", "description": "Contact name"},
+        "message": {"type": "string", "description": "Message text"},
+        "app": {"type": "string", "description": "Target app"},
+        "user_confirmed": {"type": "boolean", "description": "True if confirmed"}
+    }
+)(lambda recipient, message, app="whatsapp", user_confirmed=False: whatsapp_automation.process_whatsapp_automation(recipient, message, confirmed=user_confirmed, action="send" if user_confirmed else "prepare"))
+
+tool_registry.register(
+    name="search_web",
+    description="Search Google or the web in default browser.",
+    category="browser",
+    parameters={"query": {"type": "string", "description": "Search query"}}
+)(lambda query: webbrowser.open(f"https://www.google.com/search?q={urllib.parse.quote(query)}") or {"success": True, "query": query})
+
+tool_registry.register(
+    name="open_website",
+    description="Open a website URL in default browser.",
+    category="browser",
+    parameters={"url": {"type": "string", "description": "Web URL"}}
+)(lambda url: webbrowser.open(url) or {"success": True, "url": url})
+
+tool_registry.register(
+    name="click_element",
+    description="Click visible UI element or specified screen coordinates.",
+    category="mouse",
+    parameters={
+        "target_description": {"type": "string", "description": "Description of element"},
+        "x": {"type": "integer", "description": "X coordinate"},
+        "y": {"type": "integer", "description": "Y coordinate"}
+    }
+)(lambda target_description=None, x=None, y=None: (
+    pyautogui.click(x, y) if HAS_PYAUTOGUI and x is not None and y is not None
+    else (pyautogui.click() if HAS_PYAUTOGUI else None)
+) or {"success": True, "target": target_description or "cursor"})
+
+tool_registry.register(
+    name="type_text",
+    description="Type text into active focused element.",
+    category="keyboard",
+    parameters={
+        "text": {"type": "string", "description": "Text to type"},
+        "target": {"type": "string", "description": "Optional target input"}
+    }
+)(lambda text, target=None: (pyautogui.write(text, interval=0.02) if HAS_PYAUTOGUI else None) or {"success": True, "typed": text})
+
+tool_registry.register(
+    name="press_key",
+    description="Press keyboard key or key combination (enter, esc, backspace, ctrl+c, alt+tab).",
+    category="keyboard",
+    parameters={
+        "key": {"type": "string", "description": "Key name"},
+        "modifiers": {"type": "string", "description": "Modifiers e.g. ctrl, alt"}
+    }
+)(lambda key, modifiers=None: (
+    pyautogui.hotkey(*[m.strip() for m in modifiers.split("+")], key) if HAS_PYAUTOGUI and modifiers
+    else (pyautogui.press(key) if HAS_PYAUTOGUI else None)
+) or {"success": True, "key": key})
+
+tool_registry.register(
+    name="scroll_screen",
+    description="Scroll active window up or down.",
+    category="mouse",
+    parameters={
+        "direction": {"type": "string", "description": "'up' or 'down'"},
+        "amount": {"type": "integer", "description": "Scroll delta"}
+    }
+)(lambda direction="down", amount=300: (
+    pyautogui.scroll(-abs(amount) if direction.lower() == "down" else abs(amount)) if HAS_PYAUTOGUI else None
+) or {"success": True, "direction": direction, "amount": amount})
+
+tool_registry.register(
+    name="capture_screen",
+    description="Capture screen image for visual inspection.",
+    category="screen",
+    parameters={"focus_area": {"type": "string", "description": "Optional focus area"}}
+)(lambda focus_area=None: controller.capture_screen_base64() and {"success": True, "active_window": controller.get_active_window_title()})
+
+tool_registry.register(
+    name="understand_screen",
+    description="Inspect and understand what is visible on screen.",
+    category="screen",
+    parameters={"query": {"type": "string", "description": "Question about visible screen"}}
+)(lambda query=None: {
+    "success": True,
+    "active_window": controller.get_active_window_title(),
+    "telemetry": controller.get_system_telemetry()
+})
+
+tool_registry.register(
+    name="get_active_window",
+    description="Get title of currently focused Windows 11 foreground window.",
+    category="window",
+    parameters={}
+)(lambda: {"success": True, "active_window": controller.get_active_window_title()})
+
 
 
